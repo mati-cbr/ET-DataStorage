@@ -1,0 +1,14 @@
+[project]
+name = "et-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.121.2",
+    "invoke>=2.2.1",
+    "pydantic>=2.12.4",
+    "pymongo>=4.15.4",
+    "pytest>=9.0.1",
+    "pytest-mock-resources[mongo]>=2.12.4",
+]
