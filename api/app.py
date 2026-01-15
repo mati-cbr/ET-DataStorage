@@ -56,5 +56,26 @@ async def create_record(record: BitscopeRecordSchema):
 
     return new_record
 
+@api.post("/bulk_records", status_code=201)
+async def bulk_create_records(records: BitscopeCollectionSchema):
+    # TODO: zrobić osobny walidator/manager, migrator z obecnych csv-ek do mongo (pandas)
+    if (len(records.data) < 0):
+        raise HTTPException(
+            status_code=400, detail="Data nie może być puste"
+        )
+    
+    records_to_add = []
+    for data in records.data:
+        records_to_add.append(data.model_dump(by_alias=True, exclude=["id"]))
+
+    result = await app.bitscope.insert_many(records_to_add)
+    if (result):
+        return {
+            "info": "Dodano rekordy"
+        }
+    else:
+        raise HTTPException(
+            status_code=400, detail="Nie udało się dodać"
+        )
 
 app.include_router(api)
